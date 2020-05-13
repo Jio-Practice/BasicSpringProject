@@ -1,35 +1,39 @@
 package com.basicCrudOps;
 
+import com.CustomerInfo.Customer;
 import com.DbUtils.CustomerRepository;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UpdateCustomer {
-    @Autowired
     private final CustomerRepository customerRepository;
+    private final CheckError checkError;
+    private String ADDRESS_INVALID_CODE="003";
 
-    @PostMapping("/customer/{mobileNo}/changeAddress")
-    public @ResponseBody String ChangeAddress(@PathVariable String mobileNo,
-                                              @RequestBody String newAddress){
-        boolean valid = CheckIfExists(mobileNo);
-        if(!valid) return "Not found any customer for specified mobile No";
-        customerRepository.updateCustomerAddress(newAddress,mobileNo);
-        return "Successfully changed your address!";
-    }
+    @PostMapping(value = "/update", consumes = "application/json", produces = "application/json")
+    public @ResponseBody FormatMessage ChangeAddress(@RequestBody Customer customer,
+                                                     HttpServletResponse response) {
 
-    @PostMapping("/customer/{mobileNo}/changeName")
-    public @ResponseBody String ChangeName(@PathVariable String mobileNo,
-                                            @RequestBody String newName){
-        boolean valid = CheckIfExists(mobileNo);
-        if(!valid) return "Not found any customer for specified mobile No";
-        customerRepository.updateCustomerName(newName,mobileNo);
-        return "Successfully changed your name!";
-    }
-
-    boolean CheckIfExists(String mobileNo){
-        return customerRepository.findByMobileNo(mobileNo)!=null;
+        FormatMessage message = checkError.getMessage(customer, response);
+        if(ADDRESS_INVALID_CODE.equals(message.getCode())) {
+            return message;
+        }
+        if(customerRepository.findByMobileNo(customer.getMobileNo())==null) {
+            response.setStatus(400);
+            return new FormatMessage("006", "Mobile no. not found!");
+        }
+        customerRepository.updateCustomerAddress(customer.getAddress(), customer.getMobileNo());
+        response.setStatus(200);
+        return new FormatMessage("Success!");
     }
 }

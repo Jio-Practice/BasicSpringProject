@@ -18,5 +18,5 @@ public class Customer {
     @Id
     private String mobileNo;
     private String address;
-    private String Name;
+    private String emailId;
 }

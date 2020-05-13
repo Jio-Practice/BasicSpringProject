@@ -18,11 +18,6 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
             nativeQuery = true)
     void updateCustomerAddress(String address, String mobileNo);
 
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE CUSTOMER SET NAME= ?1 WHERE MOBILE_NO= ?2",
-            nativeQuery = true)
-    void updateCustomerName(String name, String mobileNo);
-
+    Customer findByEmailId(String emailId);
     Customer findByMobileNo(String mobileNo);
 }

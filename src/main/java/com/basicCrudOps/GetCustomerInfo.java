@@ -2,27 +2,26 @@ package com.basicCrudOps;
 
 import com.CustomerInfo.Customer;
 import com.DbUtils.CustomerRepository;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class GetCustomerInfo {
-    @Autowired
     public final CustomerRepository customerRepository;
-    @GetMapping("/customer/{mobileNo}")
-    public @ResponseBody String getCustomerFromDB(@PathVariable String mobileNo){
-        Customer customer = customerRepository.findByMobileNo(mobileNo);
-        if(customer==null){
-            return "Sorry, no customer with mobile number: "+mobileNo+" exists! ";
-        }
-        else{
-            return String.format("Hi %s, Good to see you back!. Your " +
-                    "address is %s ", customer.getName(), customer.getAddress());
-        }
+    private final CheckError checkError;
+    @PostMapping(value = "/get", consumes = "application/json", produces = "application/json")
+    public @ResponseBody Object getCustomerFromDB(@RequestBody Customer customer, HttpServletResponse response) {
+        FormatMessage formatMessage = checkError.getMessage(customer, response);
+        if (!formatMessage.getMessage().equals("Success!")) return formatMessage;
+        String emailId = customer.getEmailId();
+        String mobileNo = customer.getMobileNo();
+        if (emailId != null) return customerRepository.findByEmailId(emailId);
+        else return customerRepository.findByMobileNo(mobileNo);
     }
 }

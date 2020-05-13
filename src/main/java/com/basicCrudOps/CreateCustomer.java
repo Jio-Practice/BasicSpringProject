@@ -1,4 +1,4 @@
-package com.SimplePostAndGet;
+package com.basicCrudOps;
 
 import com.CustomerInfo.Customer;
 import com.DbUtils.CustomerRepository;
@@ -18,8 +18,8 @@ public class CreateCustomer {
         log.info("Creating a user with name: {}, mobile: {}", customer.getName(), customer.getMobileNo());
         try{
             customerRepository.save(customer);
-            return "Added customer with name" + customer.getName() +
-                    "and mobileNo. "+customer.getMobileNo()+" to DB!";
+            return "Added customer with name: " + customer.getName() +
+                    " and mobileNo. "+customer.getMobileNo()+" to DB!";
         }
         catch(Exception e) {
             return e.getMessage();

@@ -1,4 +1,4 @@
-package com.SimplePostAndGet;
+package com.basicCrudOps;
 
 import com.CustomerInfo.Customer;
 import com.DbUtils.CustomerRepository;
@@ -21,7 +21,8 @@ public class GetCustomerInfo {
             return "Sorry, no customer with mobile number: "+mobileNo+" exists! ";
         }
         else{
-            return String.format("Hi %s, Good to see you back!", customer.getName());
+            return String.format("Hi %s, Good to see you back!. Your " +
+                    "address is %s ", customer.getName(), customer.getAddress());
         }
     }
 }

@@ -4,7 +4,7 @@ import com.CustomerInfo.Customer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan("com.SimplePostAndGet")
+@ComponentScan("com.basicCrudOps")
 public class MainConfig {
 
     @Bean

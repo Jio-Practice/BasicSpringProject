@@ -19,5 +19,6 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
     void updateCustomerAddress(String address, String mobileNo);
 
     Customer findByEmailId(String emailId);
+
     Customer findByMobileNo(String mobileNo);
 }

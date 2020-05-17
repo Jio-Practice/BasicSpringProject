@@ -15,23 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class GetCustomerInfo {
-    private final ValidatorHelper validatorHelper;
+public class GetCustomer {
+    private final ValidationHelper validationHelper;
     private final CustomerRepository customerRepository;
 
     /**
      * Receives either mobile or email and returns message accordingly
-     *
-     * @param customer
-     * @return
      */
     @PostMapping(value = "/get", consumes = "application/json", produces = "application/json")
-    public @ResponseBody ResponseEntity<Object> getCustomerFromDB(@RequestBody Customer customer) {
+    public @ResponseBody
+    ResponseEntity<Object> getCustomerFromDB(@RequestBody Customer customer) {
         String mobileNo = customer.getMobileNo();
         String emailId = customer.getEmailId();
         if (mobileNo != null)
-            validatorHelper.checkForUserWithMobile(customer.getMobileNo());
-        else validatorHelper.checkForUserWithEmailId(customer.getEmailId());
+            validationHelper.checkForUserWithMobile(mobileNo);
+        else validationHelper.checkForUserWithEmailId(emailId);
         return ResponseEntity.status(200).body(mobileNo != null ? customerRepository.findByMobileNo(mobileNo) :
                 customerRepository.findByEmailId(emailId));
 

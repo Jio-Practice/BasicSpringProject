@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UpdateCustomer {
-    private final ValidatorHelper validatorHelper;
+    private final ValidationHelper validationHelper;
     private final CustomerRepository customerRepository;
 
 
@@ -24,8 +24,9 @@ public class UpdateCustomer {
      * Receives mobile and new address and changes address if mobileNo. exists in DB
      */
     @PostMapping(value = "/update", consumes = "application/json", produces = "application/json")
-    public @ResponseBody ResponseEntity<Object> ChangeAddress(@RequestBody Customer customer) {
-        validatorHelper.checkForUserWithMobile(customer.getMobileNo());
+    public @ResponseBody
+    ResponseEntity<Object> ChangeAddress(@RequestBody Customer customer) {
+        validationHelper.checkForUserWithMobile(customer.getMobileNo());
         customerRepository.updateCustomerAddress(customer.getAddress(), customer.getMobileNo());
         return ResponseEntity.status(200).body(ErrorCodes.SUCCESS_CODE);
     }

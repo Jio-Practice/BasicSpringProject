@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
  * Custom <u>unchecked</u> exception for error handling logic
  */
 @Component
-public class InvalidFormatException extends RuntimeException {
-    public InvalidFormatException(ErrorCodes.InternalHelper internalHelper) {
+public class UserAlreadyExistingException extends RuntimeException {
+    public UserAlreadyExistingException(ErrorCodes.InternalHelper internalHelper) {
         super(internalHelper.toString());
     }
 }
+

@@ -24,15 +24,32 @@ public class CustomerRespositoryTest {
 
     @Test
     public void testForCorrectDataInDb() {
+        // check if null for empty db
         assert (customerRepository.findByEmailId(TestHelper.VALID_MAIL) == null);
         assert (customerRepository.findByMobileNo(TestHelper.VALID_MOBILE) == null);
+
+        //save a new user
         customerRepository.save(TestHelper.getAnyValidCustomer());
+
+        //check for correct user in db
         Customer customerFromRepository = customerRepository.findByEmailId(TestHelper.VALID_MAIL);
         assert (customerFromRepository != null);
-        assert (customerFromRepository.toString().equals(TestHelper.getAnyValidCustomer().toString()));
+        assert isEquals(customerFromRepository);
         customerFromRepository = customerRepository.findByMobileNo(TestHelper.VALID_MOBILE);
         assert (customerFromRepository != null);
-        assert (customerFromRepository.toString().equals(TestHelper.getAnyValidCustomer().toString()));
+        assert (isEquals(customerFromRepository));
+        customerFromRepository = customerRepository.findByEmailId(TestHelper.INVALID_MAIL);
+        assert (customerFromRepository == null);
+        customerFromRepository = customerRepository.findByMobileNo(TestHelper.INVALID_MOBILE);
+        assert (customerFromRepository == null);
 
+        // check if updated correctly
+        customerRepository.updateCustomerAddress(TestHelper.NEW_ADDRESS, TestHelper.VALID_MOBILE);
+        customerFromRepository = customerRepository.findByMobileNo(TestHelper.VALID_MOBILE);
+        assert (customerFromRepository.getAddress().equals(TestHelper.NEW_ADDRESS));
+    }
+
+    private boolean isEquals(Customer customerFromRepository) {
+        return customerFromRepository.toString().equals(TestHelper.getAnyValidCustomer().toString());
     }
 }

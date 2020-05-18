@@ -10,6 +10,7 @@ public class TestHelper {
     public static final String INVALID_MOBILE = "9898989@!@";
     public static final String INVALID_MAIL = "me.com@gmail";
     public static final String INVALID_ADDRESS = "N@oida";
+    public static final String NEW_ADDRESS = "Delhi";
 
     public static Customer getAnyValidCustomer() {
         return new Customer(VALID_MOBILE, VALID_ADDRESS, VALID_MAIL);
@@ -35,6 +36,10 @@ public class TestHelper {
     public static Customer getCustomerWithInValidMobileOrMailOnly(int type) {
         return (type == 1 ? new Customer(INVALID_MOBILE, null, null) :
                 new Customer(null, null, INVALID_MAIL));
+    }
+
+    public static Customer getValidCustomerWithMobileANdAddress() {
+        return new Customer(VALID_MOBILE, NEW_ADDRESS, null);
     }
 
 }

@@ -72,20 +72,26 @@ public class GetCustomerTest {
         assert (saved); //assert if actually saved
         MvcResult result = getMvcResult(1);
         assert (isEqual(result, TestHelper.getAnyValidCustomer()));
+        assert (isStatusOk(result));
         result = getMvcResult(2);
         assert (isEqual(result, TestHelper.getAnyValidCustomer()));
+        assert (isStatusOk(result));
         result = getMvcResult(3);
         assert (isEqual(result, ErrorCodes.MOBILE_NOT_FOUND_INVALID_CODE));
+        assert (isStatusBadRequest(result));
         result = getMvcResult(4);
         assert isEqual(result, ErrorCodes.EMAIL_NOT_FOUND_INVALID_CODE);
+        assert (isStatusBadRequest(result));
     }
 
     @Test
     public void testForUnsavedCustomer() throws Exception {
         MvcResult result = getMvcResult(1);
         assert (isEqual(result, ErrorCodes.MOBILE_NOT_FOUND_INVALID_CODE));
+        assert (isStatusBadRequest(result));
         result = getMvcResult(2);
         assert (isEqual(result, ErrorCodes.EMAIL_NOT_FOUND_INVALID_CODE));
+        assert (isStatusBadRequest(result));
     }
 
     private boolean isEqual(MvcResult actual, ErrorCodes.InternalHelper mobileNotFoundInvalidCode)
@@ -113,4 +119,13 @@ public class GetCustomerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
+
+    private boolean isStatusOk(MvcResult result) {
+        return (result.getResponse().getStatus() == 200);
+    }
+
+    private boolean isStatusBadRequest(MvcResult result) {
+        return (result.getResponse().getStatus() == 400);
+    }
+
 }

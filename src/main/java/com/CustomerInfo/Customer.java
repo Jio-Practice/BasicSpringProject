@@ -1,5 +1,7 @@
 package com.CustomerInfo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +16,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class Customer {
-<<<<<<< HEAD
-    @Id
-    private String mobileNo;
-    private String address;
-    private String emailId;
-=======
 	@Id
 	private String mobileNo;
 	private String address;
@@ -34,5 +30,4 @@ public class Customer {
 			return null;
 		}
 	}
->>>>>>> 1589371... Refactored src/java code and changed tests appropriately
 }

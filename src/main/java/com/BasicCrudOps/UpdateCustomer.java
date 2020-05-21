@@ -17,21 +17,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UpdateCustomer {
-<<<<<<< HEAD
-    private final ValidatorHelper validatorHelper;
-    private final CustomerRepository customerRepository;
-
-
-    /**
-     * Receives mobile and new address and changes address if mobileNo. exists in DB
-     */
-    @PostMapping(value = "/update", consumes = "application/json", produces = "application/json")
-    public @ResponseBody ResponseEntity<Object> ChangeAddress(@RequestBody Customer customer) {
-        validatorHelper.checkForUserWithMobile(customer.getMobileNo());
-        customerRepository.updateCustomerAddress(customer.getAddress(), customer.getMobileNo());
-        return ResponseEntity.status(200).body(ErrorCodes.SUCCESS_CODE);
-    }
-=======
 	private final InvalidDbEntryValidator dbEntryValidator;
 	private final CustomerRepository customerRepository;
 
@@ -44,5 +29,4 @@ public class UpdateCustomer {
 		customerRepository.updateCustomerAddress(customer.getAddress(), customer.getMobileNo());
 		return ResponseEntity.status(200).body(ErrorEnums.SUCCESS_CODE);
 	}
->>>>>>> 1589371... Refactored src/java code and changed tests appropriately
 }
